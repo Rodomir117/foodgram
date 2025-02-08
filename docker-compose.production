@@ -1,0 +1,41 @@
+---
+version: '3.3'
+volumes:
+  media: null
+  pg_data: null
+  static: null
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  backend:
+    image: rodomir117/foodgram_backend
+    env_file: .env
+    depends_on:
+      - db
+    volumes:
+      - static:/backend_static
+      - media:/app/media
+    entrypoint: ["/entrypoint.prod.sh"]
+    command: ["gunicorn", "--bind", "0.0.0.0:7070", "foodgram_backend.wsgi"] 
+  frontend:
+    image: rodomir117/foodgram_frontend
+    env_file: .env
+    build: ./frontend/
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static:/frontend_static
+  gateway:
+    image: rodomir117/foodgram_gateway
+    env_file: .env
+    build: ./nginx/
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - static:/staticfiles
+      - media:/media
+    ports:
+      - 7070:80

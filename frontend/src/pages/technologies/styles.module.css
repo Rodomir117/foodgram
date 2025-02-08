@@ -37,7 +37,8 @@
 }
 
 .textItem {
-  margin: 0 0 16px;
+  /* margin: 0 0 16px; */
+  list-style: none;
 }
 
 @media screen and (max-width: 950px) {
