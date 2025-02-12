@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 from foodgram_backend.constants import TEXT_LENGTH_MAX, TEXT_LENGTH_MEDIUM
+from users.manager import UserManager
 
 
 class User(AbstractUser):
@@ -40,12 +41,17 @@ class User(AbstractUser):
         },
         validators=[UnicodeUsernameValidator()]
     )
-    email = models.EmailField(max_length=TEXT_LENGTH_MAX, unique=True)
+    email = models.EmailField(
+        'Электронная почта',
+        max_length=TEXT_LENGTH_MAX,
+        unique=True
+    )
     avatar = models.ImageField('Аватар', upload_to='users/')
-    password = models.CharField(max_length=TEXT_LENGTH_MEDIUM)
 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'username', 'password']
     USERNAME_FIELD = 'email'
+
+    objects = UserManager()
 
     class Meta:
         verbose_name = 'Пользователь'

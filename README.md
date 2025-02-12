@@ -73,6 +73,7 @@ sudo docker compose -f docker-compose.production.yml up -d
         location / {
             proxy_set_header Host $http_host;        
             proxy_pass http://127.0.0.1:7070;
+            client_max_body_size 5M;
             
         }
     }

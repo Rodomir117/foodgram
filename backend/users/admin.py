@@ -5,8 +5,8 @@ from users.models import Subscription, User
 
 
 @admin.register(User)
-class UserAdmin(UserAdmin):
-    """Административное представление пользователей."""
+class CustomUserAdmin(UserAdmin):
+    """Административное представление кастомных пользователей."""
 
     list_display = (
         'id',

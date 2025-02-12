@@ -21,7 +21,7 @@ services:
       - static:/backend_static
       - media:/app/media
     entrypoint: ["/entrypoint.prod.sh"]
-    command: ["gunicorn", "--bind", "0.0.0.0:7070", "foodgram_backend.wsgi"] 
+    command: ["gunicorn", "--bind", "0.0.0.0:7070", "foodgram_backend.wsgi"]
   frontend:
     container_name: foodgram-front
     env_file: .env
