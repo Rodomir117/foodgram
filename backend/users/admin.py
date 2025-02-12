@@ -14,10 +14,21 @@ class CustomUserAdmin(UserAdmin):
         'first_name',
         'last_name',
         'email',
+        'get_subscribers',
+        'get_recipes',
         'is_staff'
     )
     list_editable = ('is_staff',)
+    list_filter = ('username', 'email')
     search_fields = ('username', 'first_name', 'last_name', 'email')
+
+    @admin.display(description='Сколько подписчиков')
+    def get_subscribers(self, object):
+        return object.authors.count()
+
+    @admin.display(description='Сколько рецептов')
+    def get_recipes(self, object):
+        return object.recipes.count()
 
 
 @admin.register(Subscription)

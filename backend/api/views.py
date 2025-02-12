@@ -189,13 +189,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         pk,
         model,
         serializer_class,
-        success_message,
         already_exists_message,
     ):
         """Добавляет/удаляет рецепты в избранное или корзину пользователя."""
         user = request.user
-        recipe = get_object_or_404(Recipe, id=pk)
         if request.method == 'POST':
+            recipe = get_object_or_404(Recipe, id=pk)
             if model.objects.filter(recipe=recipe, user=user).exists():
                 return Response(
                     {'detail': already_exists_message.format(recipe.name)},
@@ -205,12 +204,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer = serializer_class(entry, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         elif request.method == 'DELETE':
-            entry = model.objects.filter(recipe=recipe, user=user)
-            if entry.exists():
-                entry.delete()
+            entry = model.objects.filter(recipe__id=pk, user=user).delete()
+            print(entry)
+            if entry[0]:
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
-                {'detail': success_message.format(recipe.name)},
+                {'detail': 'Рецепт не существует'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -228,7 +227,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             pk=pk,
             model=Favorite,
             serializer_class=FavoriteSerializer,
-            success_message='{} удален из избранного.',
             already_exists_message='{} уже в избранном.'
         )
 
@@ -246,7 +244,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             pk=pk,
             model=ShoppingCart,
             serializer_class=ShoppingCartSerializer,
-            success_message='{} удален из списка покупок.',
             already_exists_message='{} уже добавлен.'
         )
 

@@ -128,7 +128,9 @@ class Tag(models.Model):
     name = models.CharField(
         'Название', max_length=TEXT_LENGTH_MIN, unique=True
     )
-    slug = models.SlugField(max_length=TEXT_LENGTH_MIN, unique=True)
+    slug = models.SlugField(
+        'Слаг', max_length=TEXT_LENGTH_MIN, unique=True
+    )
 
     class Meta:
         verbose_name = 'Тег'

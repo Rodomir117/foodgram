@@ -4,7 +4,7 @@ import uuid
 from django.core.files.base import ContentFile
 from rest_framework import serializers
 
-from foodgram_backend.constants import IMAGE, ZERO
+from foodgram_backend.constants import IMAGE
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -391,7 +391,7 @@ class SubscriptionGetSerializer(serializers.ModelSerializer):
     """Сериализатор для получения подписок пользователей."""
 
     recipes = serializers.SerializerMethodField(method_name='get_recipes')
-    recipes_count = serializers.IntegerField(default=ZERO)
+    recipes_count = serializers.IntegerField(default=0)
     is_subscribed = serializers.BooleanField(default=True)
 
     class Meta:
