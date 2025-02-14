@@ -1,5 +1,5 @@
 [![Main Foodgram workflow](https://github.com/rodomir117/foodgram/actions/workflows/main.yml/badge.svg)](https://github.com/rodomir117/foodgram/actions/workflows/main.yml)
-# Проект: Foodgram
+# Проект: [Foodgram](https://foodgram.ddnsking.com/)
 ### Выпускной проект *Яндекс.Практикум* курса Python-разработчик(backend)
 
 Проект Foodgram дает возможность пользователям создавать и хранить рецепты на онлайн-платформе. Кроме того, можно скачать список продуктов, необходимых для приготовления блюда, просмотреть рецепты друзей и добавить любимые рецепты в список избранных.
@@ -19,9 +19,13 @@
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
-### API документация
+## [API документация](https://foodgram.ddnsking.com/redoc/)
 
-[API документация](https://foodgram.ddnsking.com/redoc/)
+## [Администрирование](https://foodgram.ddnsking.com/admin/)
+
+    Email: admin@ya.ru
+    Password: pianino1
+
 
 ## Запуск проекта на удаленном сервере
 

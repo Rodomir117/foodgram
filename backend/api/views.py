@@ -118,9 +118,8 @@ class UserViewSet(DjoserViewSet):
     def subscribe(self, request, id):
         """Подписаться или отписаться от автора."""
         user = request.user
-        author = get_object_or_404(User, id=id)
-
         if request.method == 'POST':
+            author = get_object_or_404(User, id=id)
             serializer = SubscriptionPostSerializer(
                 data={'subscriber': user.id, 'author': author.id},
                 context={'request': request}
@@ -136,7 +135,7 @@ class UserViewSet(DjoserViewSet):
             )
         elif request.method == 'DELETE':
             deleted_count, _ = Subscription.objects.filter(
-                subscriber=user, author=author
+                subscriber=user, author_id=id
             ).delete()
             if deleted_count == ZERO:
                 return Response(
@@ -180,7 +179,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
 
     def perform_create(self, serializer):
-        """Сохраняет рецепта с указанием автора."""
+        """Сохраняет рецепт с указанием автора."""
         serializer.save(author=self.request.user)
 
     def handle_favorite_or_cart(
@@ -200,13 +199,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
                     {'detail': already_exists_message.format(recipe.name)},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            entry = model.objects.create(recipe=recipe, user=user)
-            serializer = serializer_class(entry, context={'request': request})
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer = serializer_class(
+                data={'recipe': recipe.id, 'user': user.id},
+                context={'request': request}
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED
+            )
+
         elif request.method == 'DELETE':
-            entry = model.objects.filter(recipe__id=pk, user=user).delete()
-            print(entry)
-            if entry[0]:
+            deleted_count, _ = model.objects.filter(
+                recipe__id=pk, user=user
+            ).delete()
+            if deleted_count:
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
                 {'detail': 'Рецепт не существует'},

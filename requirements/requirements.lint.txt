@@ -1,3 +1,5 @@
 flake8==6.0.0
 flake8-isort==6.0.0
 flake8-quotes==3.4.0
+flake8-docstrings==1.7.0
+flake8-print==5.0.0

@@ -157,7 +157,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
         many=True, source='recipe_ingredients'
     )
     image = Base64ImageField(
-        required=True, allow_null=False, file_prefix='recipe'
+        required=False, allow_null=True, file_prefix='recipe'
     )
 
     class Meta:
@@ -361,7 +361,6 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionPostSerializer(serializers.ModelSerializer):
-
     """Сериализатор создания подписки."""
 
     class Meta:
