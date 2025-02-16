@@ -18,8 +18,8 @@ class CustomUserAdmin(UserAdmin):
         'get_recipes',
         'is_staff'
     )
-    list_display_links = ['username']
-    list_filter = ('username', 'email', 'is_active', 'is_superuser')
+    list_display_links = ('username',)
+    list_filter = ('is_active', 'is_superuser')
     search_fields = ('username', 'first_name', 'last_name', 'email')
 
     @admin.display(description='Сколько подписчиков')
@@ -29,12 +29,6 @@ class CustomUserAdmin(UserAdmin):
     @admin.display(description='Сколько рецептов')
     def get_recipes(self, object):
         return object.recipes.count()
-
-    def get_queryset(self, request):
-        """Возвращает оптимизированный queryset для списка пользователей."""
-        queryset = super().get_queryset(request)
-        queryset = queryset.prefetch_related('authors', 'recipes')
-        return queryset
 
 
 @admin.register(Subscription)

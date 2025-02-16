@@ -23,14 +23,12 @@ services:
   frontend:
     image: rodomir117/foodgram_frontend
     env_file: .env
-    build: ./frontend/
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
   gateway:
     image: rodomir117/foodgram_gateway
     env_file: .env
-    build: ./nginx/
     depends_on:
       - backend
       - frontend

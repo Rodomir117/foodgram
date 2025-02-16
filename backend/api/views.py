@@ -170,7 +170,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     permission_classes = (IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly)
     queryset = (
-        Recipe.objects.all()
+        Recipe.objects
         .select_related('author')
         .prefetch_related('tags', 'recipe_ingredients__ingredient')
     )
@@ -208,7 +208,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(
                 serializer.data, status=status.HTTP_201_CREATED
             )
-
         elif request.method == 'DELETE':
             deleted_count, _ = model.objects.filter(
                 recipe__id=pk, user=user
@@ -264,7 +263,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Возвращает набор запросов рецептов с аннотациями."""
         user = self.request.user
         queryset = (
-            Recipe.objects.all()
+            Recipe.objects
             .select_related('author')
             .prefetch_related('tags', 'recipe_ingredients')
         )

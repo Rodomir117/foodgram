@@ -156,9 +156,7 @@ class RecipePostSerializer(serializers.ModelSerializer):
     ingredients = RecipeIngredientPostSerializer(
         many=True, source='recipe_ingredients'
     )
-    image = Base64ImageField(
-        required=False, allow_null=True, file_prefix='recipe'
-    )
+    image = Base64ImageField(required=True, file_prefix='recipe')
 
     class Meta:
         model = Recipe
@@ -171,17 +169,12 @@ class RecipePostSerializer(serializers.ModelSerializer):
             'text',
             'cooking_time',
         )
-        read_only_fields = ['author']
+        read_only_fields = ('author',)
 
     def validate(self, value):
-        """Валидация изображения рецепта, ингредиентов и тегов."""
-        image = value.get('image')
+        """Валидация ингредиентов и тегов."""
         ingredients = value.get('recipe_ingredients')
         tags = value.get('tags')
-        if not image:
-            raise serializers.ValidationError(
-                'Отсутствует изображение рецепта'
-            )
         if not ingredients:
             raise serializers.ValidationError(
                 'Отсутствует обязательное поле ингредиенты'

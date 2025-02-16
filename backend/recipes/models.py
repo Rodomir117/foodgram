@@ -54,7 +54,7 @@ class Recipe(models.Model):
         default_related_name = 'recipes'
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['-created_at']
+        ordering = ('-created_at',)
 
     def __str__(self):
         return f'{self.name}. Автор: {self.author}'
@@ -72,10 +72,10 @@ class Ingredient(models.Model):
         default_related_name = 'ingredients'
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['name']
+        ordering = ('name',)
         constraints = [
             models.UniqueConstraint(
-                fields=('name', 'measurement_unit'),
+                fields=['name', 'measurement_unit'],
                 name='unique_ingredient'
             )
         ]
@@ -116,7 +116,7 @@ class RecipeIngredient(models.Model):
         default_related_name = 'recipe_ingredients'
         verbose_name = 'Ингридиенты рецепта'
         verbose_name_plural = 'Ингридиенты рецепта'
-        ordering = ['ingredient']
+        ordering = ('ingredient',)
 
     def __str__(self):
         return f'Ингридиент {self.ingredient} в количестве {self.amount}.'
@@ -135,7 +135,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
-        ordering = ['name']
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
@@ -153,7 +153,7 @@ class BaseFavoriteShoppingCart(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['user']
+        ordering = ('user',)
 
 
 class Favorite(BaseFavoriteShoppingCart):
