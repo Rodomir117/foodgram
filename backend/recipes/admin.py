@@ -18,9 +18,6 @@ class OptimizedQuerysetMixin:
         queryset = super().get_queryset(request)
         queryset = queryset.select_related(
             'user', 'recipe__author'
-        ).prefetch_related(
-            'recipe__tags',
-            'recipe__recipe_ingredients__ingredient'
         )
         return queryset
 
